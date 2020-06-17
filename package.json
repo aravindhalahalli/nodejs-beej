@@ -1,0 +1,15 @@
+{
+  "name": "node-apollo-ts-beej",
+  "version": "1.0.0",
+  "description": "A boilerplate for to start building your application using node.js, apollo graphql server, typescript and express",
+  "main": "index.js",
+  "repository": "https://github.com/rashtay/node-apollo-ts-beej.git",
+  "author": "Rahul Shetty <shettyrahul8june@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
