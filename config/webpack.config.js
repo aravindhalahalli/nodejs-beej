@@ -9,6 +9,12 @@ module.exports = {
   module: {
     rules: [
       {
+        enforce: 'pre',
+        test: /\.js$/,
+        exclude: /node_modules/,
+        loader: 'eslint-loader',
+      },
+      {
         // Transpiles ES6-8 into ES5
         test: /\.js$/,
         exclude: /node_modules/,

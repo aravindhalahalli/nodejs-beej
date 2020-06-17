@@ -10,6 +10,9 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
+  env: {
+    node: true,
+  },
   rules: {
     'padding-line-between-statements': [
       'error',

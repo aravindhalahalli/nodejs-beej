@@ -1,4 +1,5 @@
 const merge = require('webpack-merge');
+const WebpackShellPluginNext = require('webpack-shell-plugin-next');
 const commonConfig = require('./webpack.config');
 
 const devConfig = {
@@ -11,6 +12,12 @@ const devConfig = {
   optimization: {
     usedExports: true,
   },
+  watch: true,
+  plugins: [
+    new WebpackShellPluginNext({
+      onBuildEnd: { scripts: ['yarn run:dev'] },
+    }),
+  ],
 };
 
 module.exports = merge(commonConfig, devConfig);
