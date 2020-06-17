@@ -1,6 +1,6 @@
 module.exports = {
   output: {
-    filename: "[name].[contentHash].bundle.js",
+    filename: '[name].[contentHash].bundle.js',
   },
-  mode: "production",
+  mode: 'production',
 };

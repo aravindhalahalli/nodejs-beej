@@ -1,0 +1,11 @@
+{
+  "*.{ts}": [
+    "prettier --parser typescript --write",
+    "bash -c tsc",
+    "eslint --fix"
+  ],
+  "*.{js}": [
+    "prettier --parser typescript --write",
+    "eslint --fix"
+  ]
+}
