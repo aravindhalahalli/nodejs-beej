@@ -81,7 +81,7 @@ const server = new ApolloServer({
   resolvers,
 });
 
-server.applyMiddleware({ app, path: '/api/graphql' }
+server.applyMiddleware({ app, path: '/api/graphql' };
 
 app.listen(PORT, () => {
   console.info(`Listening on port ${PORT}`);
