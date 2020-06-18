@@ -3,11 +3,10 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import bodyParser from 'body-parser';
-import cookieParser from 'cookie-parser';
 import hpp from 'hpp';
-import csrf from 'csurf';
 import morgan from 'morgan';
 import compression from 'compression';
+import { ApolloServer, gql } from 'apollo-server-express';
 
 enum ENV {
   DEVELOPMENT = 'development',
@@ -25,25 +24,12 @@ const limiter = rateLimit({
   max: 100,
 });
 
-const csrfProtection = csrf({
-  cookie: true,
-});
-
 const app = express();
 
 app.enable('trust proxy');
 
 // Compress the incoming request and outgoing response
 app.use(compression());
-
-console.log(process.env.NODE_ENV);
-
-// parse cookies
-// we need this because "cookie" is true in csrfProtection
-app.use(cookieParser());
-
-// Enable CSRF protection
-app.use(csrfProtection);
 
 // Integrates necessary security related middlewares
 app.use(helmet());
@@ -70,10 +56,33 @@ if (ENV.DEVELOPMENT === process.env.NODE_ENV) {
   app.use(morgan('combined'));
 }
 
-app.get('/', (req, res) => {
-  res.send('Hi there');
+const schema = gql`
+  type Query {
+    me: User
+  }
+
+  type User {
+    username: String!
+  }
+`;
+
+const resolvers = {
+  Query: {
+    me: () => {
+      return {
+        username: 'Robin Wieruch',
+      };
+    },
+  },
+};
+
+const server = new ApolloServer({
+  typeDefs: schema,
+  resolvers,
 });
 
+server.applyMiddleware({ app, path: '/api/graphql' });
+
 app.listen(PORT, () => {
-  console.log(`Listening on port ${PORT}`);
+  console.info(`Listening on port ${PORT}`);
 });
