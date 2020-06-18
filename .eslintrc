@@ -1,10 +1,14 @@
 {
   "root": true,
-  "extends": ["prettier", "prettier/@typescript-eslint"],
+  "extends": [
+    "airbnb-typescript/base",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 2018,
     "sourceType": "module",
     "ecmaFeatures": {
       "modules": true,
@@ -13,7 +17,12 @@
     "project": "./tsconfig.json"
   },
   "env": {
+    "es6": true,
     "node": true
+  },
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
   },
   "rules": {
     "padding-line-between-statements": [
@@ -40,6 +49,16 @@
 
     "quotes": ["error", "single", "avoid-escape"],
     "import/prefer-default-export": 0,
-    "import/no-extraneous-dependencies": 0
+    "import/no-extraneous-dependencies": 0,
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ]
   }
 }
