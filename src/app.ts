@@ -1,3 +1,5 @@
+// https://clinicjs.org/documentation/
+// Run npx clinic doctor -- node dist/app.bundle.js to diagnose the application
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
