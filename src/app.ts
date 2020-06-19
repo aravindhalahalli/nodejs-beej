@@ -6,7 +6,6 @@ import bodyParser from 'body-parser';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import compression from 'compression';
-import { ApolloServer, gql } from 'apollo-server-express';
 
 enum ENV {
   DEVELOPMENT = 'development',
@@ -56,33 +55,16 @@ if (ENV.DEVELOPMENT === process.env.NODE_ENV) {
   app.use(morgan('combined'));
 }
 
-const schema = gql`
-  type Query {
-    me: User
-  }
+app.listen(PORT, () =>
+  console.info(
+    `
+      🚀 REST APIs are running on port http://localhost:${PORT}/
+    `,
+  ),
+);
 
-  type User {
-    username: String!
-  }
-`;
-
-const resolvers = {
-  Query: {
-    me: () => {
-      return {
-        username: 'Robin Wieruch',
-      };
-    },
-  },
-};
-
-const server = new ApolloServer({
-  typeDefs: schema,
-  resolvers,
-});
-
-server.applyMiddleware({ app, path: '/api/graphql' });
-
-app.listen(PORT, () => {
-  console.info(`Listening on port ${PORT}`);
-});
+// Hot Module Replacement
+if (module && module.hot) {
+  module.hot.accept();
+  module.hot.dispose(() => console.info('Module disposed. '));
+}
