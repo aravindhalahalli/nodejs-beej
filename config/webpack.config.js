@@ -1,7 +1,9 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
+const { resolveRoot } = require('./utils');
 
 module.exports = {
+  entry: { app: resolveRoot('src/app.ts') },
   module: {
     rules: [
       {
@@ -30,6 +32,7 @@ module.exports = {
     __dirname: false, // if you don't put this is, __dirname
     __filename: false, // and __filename return blank or /
   },
+  externals: [nodeExternals()],
   resolve: {
     extensions: ['.ts', '.js'],
   },

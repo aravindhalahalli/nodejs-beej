@@ -55,6 +55,10 @@ if (ENV.DEVELOPMENT === process.env.NODE_ENV) {
   app.use(morgan('combined'));
 }
 
+app.get('/', (req, res) => {
+  res.send('Hello');
+});
+
 app.listen(PORT, () =>
   console.info(
     `
@@ -62,9 +66,3 @@ app.listen(PORT, () =>
     `,
   ),
 );
-
-// Hot Module Replacement
-if (module && module.hot) {
-  module.hot.accept();
-  module.hot.dispose(() => console.info('Module disposed. '));
-}
