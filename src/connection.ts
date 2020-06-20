@@ -4,7 +4,7 @@ import http from 'http';
 import { Express } from 'express';
 import mongoose from 'mongoose';
 import redis from 'redis';
-import { ENV } from './utils/config';
+import { ENV } from '@utils/config';
 
 const { isDevelopment, redisPort, dbname, PORT } = ENV;
 

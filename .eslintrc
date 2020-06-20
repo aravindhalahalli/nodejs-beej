@@ -1,10 +1,6 @@
 {
   "root": true,
-  "extends": [
-    "airbnb-typescript/base",
-    "prettier",
-    "prettier/@typescript-eslint"
-  ],
+  "extends": ["airbnb-typescript", "prettier", "prettier/@typescript-eslint"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "parserOptions": {
@@ -49,10 +45,13 @@
       "ignorePackages",
       {
         "js": "never",
-        "jsx": "never",
-        "ts": "never",
-        "tsx": "never"
+        "ts": "never"
       }
     ]
+  },
+  "settings": {
+    "import/resolver": {
+      "typescript": {}
+    }
   }
 }

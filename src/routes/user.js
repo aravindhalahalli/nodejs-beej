@@ -1,6 +1,6 @@
 // Mini ExpressJS Application
 import { Router } from 'express';
-import { createUser, getAllUsers } from '../controllers/user';
+import { createUser, getAllUsers } from '@controllers/user';
 
 const router = Router();
 
