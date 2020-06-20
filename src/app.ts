@@ -1,66 +1,17 @@
 // https://clinicjs.org/documentation/
 // Run npx clinic doctor -- node dist/app.bundle.js to diagnose the application
-import express, { Express } from 'express';
+import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
-import rateLimit from 'express-rate-limit';
 import bodyParser from 'body-parser';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import compression from 'compression';
-import redis from 'redis';
-import mongoose from 'mongoose';
-
-enum ENV {
-  DEVELOPMENT = 'development',
-}
-
-const PORT = 5000;
-
-const corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
-};
-
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-});
+import { connectDBAndServer } from './connection';
+import v1Router from './routes';
+import { corsOptions, limiter, ENV, isDevelopment } from './utils/config';
 
 const app = express();
-const client = redis.createClient({
-  // Docker finds and handles the host for us
-  host: 'redis-server',
-  port: 6379,
-});
-
-client.on('error', (error) => {
-  console.error(error);
-});
-
-const connectToMongodb = async (nodeapp: Express, nodePort: number) => {
-  try {
-    const connection = await mongoose.connect('mongodb://mongodb', {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      useCreateIndex: true,
-      useFindAndModify: true,
-    });
-
-    nodeapp.listen(nodePort, () =>
-      console.info(
-        `🚀 REST APIs are running on port http://localhost:${nodePort}/`,
-      ),
-    );
-
-    return connection;
-  } catch (error) {
-    // If we cannot connect to the database, show the error
-    console.error('Failed to connect to the database', error);
-
-    return error;
-  }
-};
 
 app.enable('trust proxy');
 
@@ -86,14 +37,12 @@ app.use(
 app.use(hpp());
 
 // HTTP logger
-if (ENV.DEVELOPMENT === process.env.NODE_ENV) {
+app.use(morgan('combined'));
+
+if (isDevelopment) {
   app.use(morgan('dev'));
-} else {
-  app.use(morgan('combined'));
 }
 
-app.get('/', (req, res) => {
-  res.send('Awesome, nodejs');
-});
+app.use('/api/v1', v1Router);
 
-connectToMongodb(app, PORT);
+connectDBAndServer(app, ENV.PORT);

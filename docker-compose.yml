@@ -3,6 +3,7 @@ services:
   redis-server:
     container_name: redis-server
     image: redis # redis will be automatically connected by compose to our app
+    restart: always
   mongodb:
     container_name: mongodb
     image: mongo # redis will be automatically connected by compose to our app
