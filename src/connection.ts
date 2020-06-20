@@ -39,7 +39,7 @@ client.on('error', onError);
 // A utility function to start the app only if we can connect to mongodb
 export const connectDBAndServer = async (nodeapp: Express, nodePort: Port) => {
   try {
-    await mongoose.connect('mongodb://mongodb', {
+    await mongoose.connect('mongodb://mongodb/nodeapp', {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,

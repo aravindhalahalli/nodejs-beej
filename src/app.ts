@@ -30,17 +30,18 @@ app.use(limiter);
 // Parse the form/json response
 app.use(
   bodyParser.urlencoded({
-    extended: false,
+    extended: true,
   }),
 );
+app.use(bodyParser.json());
 // middleware to protect against HTTP Parameter Pollution attacks
 app.use(hpp());
 
-// HTTP logger
-app.use(morgan('combined'));
-
 if (isDevelopment) {
   app.use(morgan('dev'));
+} else {
+  // HTTP logger
+  app.use(morgan('combined'));
 }
 
 app.use('/api/v1', v1Router);
