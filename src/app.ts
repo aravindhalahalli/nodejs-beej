@@ -7,9 +7,9 @@ import bodyParser from 'body-parser';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import compression from 'compression';
+import v1Router from '@routes/index';
+import { corsOptions, limiter, ENV } from '@utils/config';
 import { connectDBAndServer } from './connection';
-import v1Router from './routes';
-import { corsOptions, limiter, ENV } from './utils/config';
 
 const app = express();
 

@@ -35,6 +35,13 @@ module.exports = {
   externals: [nodeExternals()],
   resolve: {
     extensions: ['.ts', '.js'],
+    alias: {
+      '@controllers': resolveRoot('src/controllers'),
+      '@models': resolveRoot('./src/models'),
+      '@routes': resolveRoot('./src/routes'),
+      '@types': resolveRoot('./src/types'),
+      '@utils': resolveRoot('./src/utils'),
+    },
   },
   target: 'node',
   plugins: [new CleanWebpackPlugin()],
