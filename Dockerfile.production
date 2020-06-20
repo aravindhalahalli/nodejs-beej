@@ -30,8 +30,9 @@ WORKDIR /app
 COPY ./package.json ./
 COPY ./yarn.lock ./
 
-# Install some dependencies
-RUN yarn
+# Install dependenciesand clear the cache for production
+RUN yarn install --production --force --ignore-scripts --prefer-offline && \
+    yarn cache clean
 
 # Copy rest of the files
 COPY ./ ./

@@ -1,0 +1,13 @@
+# docker-compose up: For running our image
+# docker-compose up --build: Rebuild and run our image
+# docker-compose up -d: Launch in background
+# docker-compose down: Stop all containers
+# docker-compose ps: Display running containers
+version: '3.8'
+services:
+  redis-server:
+    image: 'redis' # redis will be automatically connected by compose to our app
+  node-app:
+    build: .
+    ports:
+      - '5000:5000' # This is for our localhost to access VM's localhost

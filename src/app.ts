@@ -8,6 +8,7 @@ import bodyParser from 'body-parser';
 import hpp from 'hpp';
 import morgan from 'morgan';
 import compression from 'compression';
+import redis from 'redis';
 
 enum ENV {
   DEVELOPMENT = 'development',
@@ -26,6 +27,13 @@ const limiter = rateLimit({
 });
 
 const app = express();
+const client = redis.createClient({
+  // Docker finds and handles the host for us
+  host: 'redis-server',
+  port: 6379,
+});
+
+client.setex('TEST', 2, 'works');
 
 app.enable('trust proxy');
 
@@ -58,7 +66,7 @@ if (ENV.DEVELOPMENT === process.env.NODE_ENV) {
 }
 
 app.get('/', (req, res) => {
-  res.send('Hello');
+  res.send('Awesome');
 });
 
 app.listen(PORT, () =>
