@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   redis-server:
-    container_name: redis
+    container_name: redis-server
     image: redis # redis will be automatically connected by compose to our app
   mongodb:
     container_name: mongodb

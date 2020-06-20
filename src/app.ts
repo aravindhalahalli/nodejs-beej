@@ -1,6 +1,6 @@
 // https://clinicjs.org/documentation/
 // Run npx clinic doctor -- node dist/app.bundle.js to diagnose the application
-import express from 'express';
+import express, { Express } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
@@ -9,6 +9,7 @@ import hpp from 'hpp';
 import morgan from 'morgan';
 import compression from 'compression';
 import redis from 'redis';
+import mongoose from 'mongoose';
 
 enum ENV {
   DEVELOPMENT = 'development',
@@ -33,7 +34,33 @@ const client = redis.createClient({
   port: 6379,
 });
 
-client.setex('TEST', 2, 'works');
+client.on('error', (error) => {
+  console.error(error);
+});
+
+const connectToMongodb = async (nodeapp: Express, nodePort: number) => {
+  try {
+    const connection = await mongoose.connect('mongodb://mongodb', {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+      useFindAndModify: true,
+    });
+
+    nodeapp.listen(nodePort, () =>
+      console.info(
+        `🚀 REST APIs are running on port http://localhost:${nodePort}/`,
+      ),
+    );
+
+    return connection;
+  } catch (error) {
+    // If we cannot connect to the database, show the error
+    console.error('Failed to connect to the database', error);
+
+    return error;
+  }
+};
 
 app.enable('trust proxy');
 
@@ -69,10 +96,4 @@ app.get('/', (req, res) => {
   res.send('Awesome, nodejs');
 });
 
-app.listen(PORT, () =>
-  console.info(
-    `
-      🚀 REST APIs are running on port http://localhost:${PORT}/
-    `,
-  ),
-);
+connectToMongodb(app, PORT);
