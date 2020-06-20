@@ -9,7 +9,7 @@ import morgan from 'morgan';
 import compression from 'compression';
 import { connectDBAndServer } from './connection';
 import v1Router from './routes';
-import { corsOptions, limiter, ENV, isDevelopment } from './utils/config';
+import { corsOptions, limiter, ENV } from './utils/config';
 
 const app = express();
 
@@ -37,7 +37,7 @@ app.use(bodyParser.json());
 // middleware to protect against HTTP Parameter Pollution attacks
 app.use(hpp());
 
-if (isDevelopment) {
+if (ENV.isDevelopment) {
   app.use(morgan('dev'));
 } else {
   // HTTP logger
@@ -46,4 +46,4 @@ if (isDevelopment) {
 
 app.use('/api/v1', v1Router);
 
-connectDBAndServer(app, ENV.PORT);
+connectDBAndServer(app);

@@ -4,7 +4,9 @@ import http from 'http';
 import { Express } from 'express';
 import mongoose from 'mongoose';
 import redis from 'redis';
-import { isDevelopment } from './utils/config';
+import { ENV } from './utils/config';
+
+const { isDevelopment, redisPort, dbname, PORT } = ENV;
 
 type Server = https.Server | http.Server;
 type Port = number;
@@ -18,8 +20,9 @@ const onConnect = (server: Server) => {
   console.info(`🚀 REST APIs are running on ${bind}`);
 };
 
+// On any connection error
 const onError = (err: any) =>
-  console.error('OOPS! There seems to be problem: =====>', err);
+  console.error('<========= OOPS! There seems to be problem: =========>', err);
 
 const connectServer = (serverInstance: Server, port: Port) => {
   serverInstance.listen(port, onConnect.bind(null, serverInstance));
@@ -31,15 +34,17 @@ const connectServer = (serverInstance: Server, port: Port) => {
 const client = redis.createClient({
   // Docker finds and handles the host for us
   host: 'redis-server',
-  port: 6379,
+  port: redisPort,
 });
 
 client.on('error', onError);
 
 // A utility function to start the app only if we can connect to mongodb
-export const connectDBAndServer = async (nodeapp: Express, nodePort: Port) => {
+export const connectDBAndServer = async (nodeapp: Express) => {
+  const DBURL = `mongodb://mongodb/${dbname}`;
+
   try {
-    await mongoose.connect('mongodb://mongodb/nodeapp', {
+    await mongoose.connect(DBURL, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
@@ -63,13 +68,13 @@ export const connectDBAndServer = async (nodeapp: Express, nodePort: Port) => {
 
       const serverSecured = https.createServer(credentials, nodeapp);
 
-      connectServer(serverSecured, nodePort);
+      connectServer(serverSecured, PORT);
     } else {
       // http server
       // @TODO: This needs to replaced for prod
       const server = http.createServer(nodeapp);
 
-      connectServer(server, nodePort);
+      connectServer(server, PORT);
     }
   } catch (error) {
     // If we cannot connect to the database, show the error
