@@ -1,13 +1,24 @@
-# docker-compose up: For running our image
-# docker-compose up --build: Rebuild and run our image
-# docker-compose up -d: Launch in background
-# docker-compose down: Stop all containers
-# docker-compose ps: Display running containers
 version: '3.8'
 services:
   redis-server:
-    image: 'redis' # redis will be automatically connected by compose to our app
+    container_name: redis
+    image: redis # redis will be automatically connected by compose to our app
+  mongodb:
+    container_name: mongodb
+    image: mongo # redis will be automatically connected by compose to our app
+    ports:
+      - '27017:27017'
+    volumes:
+      - ./data:/data/db
+    restart: always
   node-app:
-    build: .
+    container_name: node-app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     ports:
       - '5000:5000' # This is for our localhost to access VM's localhost
+    volumes:
+      - /app/node_modules # Volumes provide a reference to the files and folders in our machine and not the one in Docker VM. But, I didn't specify colon(:). So, it means no need to reference the folder in our machine. It can stick to it's existing folder
+      - .:/app # Rest of the files needs to be referenced to our files and folders. These helps with Hot reloads
+    restart: always

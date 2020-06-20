@@ -66,7 +66,7 @@ if (ENV.DEVELOPMENT === process.env.NODE_ENV) {
 }
 
 app.get('/', (req, res) => {
-  res.send('Awesome');
+  res.send('Awesome, nodejs');
 });
 
 app.listen(PORT, () =>
