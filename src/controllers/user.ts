@@ -19,7 +19,7 @@ export const createUser = async (req: Request, res: Response) => {
   return res.status(400).json({ error: 'Data seems to be empty' });
 };
 
-export const getAllUsers = async (req: Request, res: Response) => {
+export const getAllUsers = async (_: Request, res: Response) => {
   try {
     const result = await User.find();
 

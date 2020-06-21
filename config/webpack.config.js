@@ -3,7 +3,7 @@ const nodeExternals = require('webpack-node-externals');
 const { resolveRoot } = require('./utils');
 
 module.exports = {
-  entry: { app: resolveRoot('src/app.ts') },
+  entry: { server: resolveRoot('src/server.ts') },
   module: {
     rules: [
       {

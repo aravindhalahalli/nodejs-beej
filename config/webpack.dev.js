@@ -5,7 +5,7 @@ const commonConfig = require('./webpack.config');
 const devConfig = {
   devtool: 'inline-source-map',
   output: {
-    filename: '[name].bundle.js',
+    filename: 'server.js',
   },
   mode: 'development',
 
