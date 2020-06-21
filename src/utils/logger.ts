@@ -1,24 +1,42 @@
-import winston from 'winston';
+import winston, { format } from 'winston';
+import { PROD } from './constants';
 
-const options: winston.LoggerOptions = {
-  format: winston.format.json(),
-  transports: [
-    new winston.transports.Console({
-      level: process.env.NODE_ENV === 'production' ? 'error' : 'debug',
-      handleExceptions: true,
-    }),
-    new winston.transports.File({
-      filename: 'log/server.log',
-      level: 'debug',
-      handleExceptions: true,
-      maxsize: 5242880,
-      maxFiles: 5,
-    }),
-  ],
-  exitOnError: false,
+const fileConfig = {
+  filename: 'logs/combined.log',
+  handleExceptions: true,
+  json: true,
+  maxsize: 5242880, // 5MB
+  maxFiles: 5,
+  colorize: false,
 };
 
-const logger = winston.createLogger(options);
+// define the custom settings for each transport (file, console)
+const options = {
+  fileCombined: {
+    ...fileConfig,
+  },
+  fileError: {
+    ...fileConfig,
+    level: 'error',
+    filename: 'logs/error.log',
+  },
+  console: {
+    level: process.env.NODE_ENV === PROD ? 'error' : 'debug',
+    handleExceptions: true,
+    json: false,
+    colorize: true,
+  },
+};
+
+const logger = winston.createLogger({
+  format: format.combine(format.timestamp(), format.simple()),
+  transports: [
+    new winston.transports.File(options.fileCombined),
+    new winston.transports.File(options.fileError),
+    new winston.transports.Console(options.console),
+  ],
+  exitOnError: false, // do not exit on handled exceptions
+});
 
 export const logStream = {
   write: (message: string) => {
@@ -27,7 +45,7 @@ export const logStream = {
   },
 };
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV !== PROD) {
   logger.debug('Logging initialized at debug level');
 }
 

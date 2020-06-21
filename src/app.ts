@@ -19,8 +19,8 @@ import {
   IS_PROD,
   MONGODB_URI,
   SESSION_SECRET,
-  PLACEHOLDER,
 } from '@utils/config';
+import { PLACEHOLDER } from '@utils/constants';
 import { logStream } from '@utils/logger';
 
 const app = express();

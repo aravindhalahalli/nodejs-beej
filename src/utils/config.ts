@@ -2,6 +2,7 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import logger from './logger';
+import { PROD } from './constants';
 
 if (fs.existsSync('.env')) {
   logger.debug('Using .env file to supply config environment variables');
@@ -14,7 +15,7 @@ if (fs.existsSync('.env')) {
 }
 
 export const ENVIRONMENT = process.env.NODE_ENV;
-export const IS_PROD = ENVIRONMENT === 'production'; // Anything else is treated as 'dev'
+export const IS_PROD = ENVIRONMENT === PROD; // Anything else is treated as 'dev'
 
 export const { SESSION_SECRET } = process.env;
 export const MONGODB_URI = IS_PROD
@@ -22,7 +23,6 @@ export const MONGODB_URI = IS_PROD
   : process.env.MONGODB_URI_LOCAL;
 export const PORT = parseInt(process.env.PORT || '5000', 10);
 export const REDIS_PORT = parseInt(process.env.REDIS_PORT || '6379', 10);
-export const PLACEHOLDER = 'placeholder';
 
 export const CORS_OPTIONS = {
   origin: '*',
