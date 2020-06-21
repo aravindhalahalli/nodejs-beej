@@ -1,6 +1,10 @@
 {
   "root": true,
-  "extends": ["airbnb-typescript", "prettier", "prettier/@typescript-eslint"],
+  "extends": [
+    "airbnb-typescript/base",
+    "prettier",
+    "prettier/@typescript-eslint"
+  ],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint"],
   "parserOptions": {
