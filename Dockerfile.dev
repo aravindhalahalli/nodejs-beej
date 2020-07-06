@@ -7,7 +7,7 @@ WORKDIR /app
 RUN apk update && apk add nano
 
 # Copy our package files. Copy the other files later to avoid unnecessary rebuilds
-COPY package*.json ./
+COPY package.json ./
 COPY ./yarn.lock ./
 
 # Install some dependencies
@@ -17,4 +17,4 @@ RUN yarn
 COPY ./ ./
 
 # Default command
-CMD ["yarn", "start"]
+CMD ["yarn", "start-app"]

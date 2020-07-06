@@ -8,9 +8,12 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "build-dev": "webpack --config config/webpack.dev.js",
-    "run-dev": "NODE_ENV=development nodemon dist/server.js",
-    "start": "concurrently \"npm:build-dev\" \"npm:run-dev\""
+    "build-dev": "webpack --progress --colors --config config/webpack.dev.js",
+    "run-dev": "NODE_ENV=development nodemon \"./dist/server.js\" --watch \"./dist/*\"",
+    "start-app": "node watch-shim.js && concurrently \"npm:build-dev\" \"npm:run-dev\"",
+    "start": "docker-compose up --build",
+    "stop": "docker-compose down -v --rmi all --remove-orphans",
+    "clean": "rm -rf ./dist ./logs && docker rm -f $(docker ps -a -q) && docker volume rm $(docker volume ls -q) && docker system prune -a"
   },
   "dependencies": {
     "body-parser": "^1.19.0",

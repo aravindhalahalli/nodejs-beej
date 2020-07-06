@@ -5,7 +5,7 @@ FROM node:lts-alpine
 WORKDIR /app
 
 # Copy our package files. Copy the other files later to avoid unnecessary rebuilds
-COPY package*.json ./
+COPY package.json ./
 COPY ./yarn.lock ./
 
 # Install dependenciesand clear the cache for production
@@ -16,4 +16,4 @@ RUN yarn install --production --force --ignore-scripts --prefer-offline && \
 COPY ./ ./
 
 # Default command
-CMD ["yarn", "start"]
+CMD ["yarn", "start-app"]

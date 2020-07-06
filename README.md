@@ -40,7 +40,8 @@ The starter kit provides you with the modern tools for building scalable APIs. I
 - Remove the previous git history: - `rm -rf .git/`
 - Rename the project name in `package.json`
 - Install [Docker Desktop](https://www.docker.com/products/docker-desktop) and start it
-- Run `docker-compose up`. You can use `docker-compose up --build`, if anything goes wrong and you wanna rebuild your container and start again.
+- If your running this project for the first time, run `yarn clean` to clean all your previous docker builds, containers and images. This is necessary as some of the container names from your previous build might conflict with the existing one. You can avoid running this command if you aren't facing any conflicts or by clearing only the container ids having a conflicting name.
+- Run `yarn start`
 - Remove the LICENSE file and the "License" section from the **README** if your project is not an open source project
 - Update the existing `README.md` file with the content related to the app and app development.
 - You can now create a new git repository for your project (using `git init`) and make the first commit.
